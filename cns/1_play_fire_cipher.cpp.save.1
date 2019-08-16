@@ -1,0 +1,114 @@
+#include<iostream>
+
+using namespace std;
+
+char matrix[5][5], flag[26];
+
+void FormatKey(string key)
+{
+    int x_ind=0, y_ind=0;
+    for(int i=0;i<key.length();i++)
+    {
+        if(key[i]==' ') continue;
+        if(key[i]=='j') key[i]='i';
+
+        if(!flag[key[i]-97])
+            matrix[x_ind][y_ind++] = key[i], flag[key[i]-97]=1;
+
+        if(y_ind==5)    x_ind++, y_ind=0;
+    }
+
+    for(int i=0;i<26;i++)
+    {
+        if(i==9)    continue;
+        if(key[i]=='j') key[i]='i';
+        if(!flag[i])    matrix[x_ind][y_ind++] = i+97, flag[i]=1 ;
+
+        if(y_ind==5)    x_ind++, y_ind=0;
+    }
+}
+
+void FormatMessage(string &message)
+{
+    for(int i=0;i<message.length();i++)
+        if(message[i] == ' ')
+            message = message.replace(i, 1, "");
+
+    for(int i=1;i<message.length();i++)
+         if(message[i-1] == message[i])
+            message = message.insert(i, "x"), i++;
+    if(message.length()%2)
+        message += "x";
+
+}
+
+int getx(char c)
+{
+    for(int i=0;i<5;i++)
+        for(int j=0;j<5;j++)
+            if(c==matrix[i][j])
+                return i;
+}
+int gety(char c)
+{
+    for(int i=0;i<5;i++)
+        for(int j=0;j<5;j++)
+            if(c==matrix[i][j])
+                return j;
+}
+
+
+string Encrypt(string &message)
+{
+    string enc_msg;
+    for(int i=0;i<message.length();i+=2)
+    {
+        int xind1 = getx(message[i]);
+        int xind2 = getx(message[i+1]);
+        int yind1 = gety(message[i]);
+        int yind2 = gety(message[i+1]);
+        cout<<endl<<xind1<<xind2<<yind1<<yind2<<endl;
+        if( xind1 == xind2 )
+        {
+            enc_msg.append(1, matrix[xind1][(yind1+1)%5]);
+            enc_msg.append(1, matrix[xind2][(yind2+1)%5]);
+        }
+        else if( yind1 == yind2 )
+        {
+            enc_msg.append(1, matrix[(xind1+1)%5][yind1]);
+            enc_msg.append(1, matrix[(xind2+1)%5][yind2]);
+        }
+        else
+        {
+            enc_msg.append(1, matrix[ xind1 ][ yind1 ]);
+            enc_msg.append(1, matrix[ xind2 ][ yind2 ]);
+        }
+    }
+    return enc_msg;
+}
+
+int main()
+{
+	string message, keys[100];
+	int  num_of_keys;
+	cout<<"Enter the number of keys:";
+	cin>>num_of_keys;
+	cout<<"Enter the keys:";
+	cin.get();
+	for(int i=0;i<num_of_keys;i++)
+	    getline(cin, keys[i]);
+    cout<<"Enter a message to be encrypted: ";
+    getline(cin, message);
+	FormatKey(keys[0]);
+
+	for(int i=0;i<5;i++){
+	    for(int j=0;j<5;j++)
+	        cout<<matrix[i][j]<<" ";
+	    cout<<endl;
+	}
+
+	FormatMessage(message);
+	cout<<message<<endl;
+	cout<<Encrypt(message);
+	return 0;
+}
