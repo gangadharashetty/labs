@@ -212,9 +212,17 @@ Sample Output
 Enter the number of keys:1
 Enter the keys:playfair example
 Enter a message to be encrypted: hide the gold
+
+
 ----------------------------
 Using key0: playfair example
 ----------------------------
+Key Matrix:
+p l a y f
+i r e x m
+b c d g h
+k n o q s
+t u v w z
 Actual Message: hide the gold
 Formatted Message: hidethegoldx
 Encrypted Message: bmodzbxdnage
