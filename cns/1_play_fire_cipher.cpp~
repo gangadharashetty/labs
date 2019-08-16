@@ -20,7 +20,6 @@ Algorithm
         c. If the letters appear on the same column of the table, replace them with the letters immediately below respectively (wrapping around to the top side of the column if a letter in the original pair was on the bottom side of the column).
 
 */
-
 #include<iostream>
 #include<cmath>
 
@@ -167,18 +166,14 @@ int main()
 {
 	string message, keys[100];
 	int  num_of_keys;
-
 	cout<<"Enter the number of keys:";
 	cin>>num_of_keys;
-	cin.get();
-	
 	cout<<"Enter the keys:";
+	cin.get();
 	for(int i=0;i<num_of_keys;i++)
 	    getline(cin, keys[i]);
-
     cout<<"Enter a message to be encrypted: ";
     getline(cin, message);
-    
     for(int i=0;i<num_of_keys;i++)
     {
         GenerateMatrix(keys[i]);
