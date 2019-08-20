@@ -3,11 +3,11 @@
     Author: Gangadhara Shetty P J
 
     Algorithm:
-    ---------
+    ---------d
     1. Initialization
         N = {A}     // A is a root node.
     2. for all nodes v
-         if v adjacent to A
+         if v adjsdacent to A
          then D(v) = c(A,v)
          else D(v) = infinity
        loop
@@ -69,8 +69,7 @@ void updateDistanceForAdjacentNodes(int node)
     {
         if( cost[node][i] != INFINITY )
         {
-            if(distance[i] > distance[node]+cost[node][i])  // STEP 6
-in Algorithm
+            if(distance[i] > distance[node]+cost[node][i])  // STEP 6 in Algorithm
             {
                 distance[i] = distance[node]+cost[node][i];
                 parent[i] = node;
