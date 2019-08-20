@@ -22,15 +22,16 @@ int frequency_count[256];
 vector<string> keys;
 
 // To encrypt the plain_text with the key
-string Encrypt(string plain_text, string unique_characters, string key)
+string encrypt(string plain_text, string unique_characters, string key)
 {
     for(int i=0; i<plain_text.length(); i++)
         plain_text[i] = key[ unique_characters.find( plain_text[i] ) ];
     return plain_text;
 }
 
-void GenerateKeysByPermutation(string text)
+void generateKeysByPermutation(string text)
 {
+    sort( text.begin(), text.end());
     // next_permutation is a readily available function to generate permutation of the string
     while(next_permutation(text.begin(), text.end()))
     {
@@ -39,7 +40,7 @@ void GenerateKeysByPermutation(string text)
     }
 }
 
-string ReadFile(char* file_name)
+string readFile(char* file_name)
 {
     string text;
     ifstream fin(file_name);
@@ -48,14 +49,14 @@ string ReadFile(char* file_name)
     return text;
 }
 
-void StoreFile(char* file_name, string text)
+void storeFile(char* file_name, string text)
 {
     ofstream fout(file_name);
     fout<<text;
     fout.close();
 }
 
-string GetUniqueCharacters(string plain_text)
+string getUniqueCharacters(string plain_text)
 {
     int flag[255]={0};
     string unique_characters="";
@@ -69,7 +70,7 @@ string GetUniqueCharacters(string plain_text)
     return unique_characters;
 }
 
-void CalculateFrequency(string unique_characters, string key, string text)
+void calculateFrequency(string unique_characters, string key, string text)
 {
     float length = text.length();
     cout<<"Frequency\tUnique Characters\tChoosen Key"<<endl;
@@ -84,23 +85,23 @@ int main() {
 
     srand(time(0));
 
-    plain_text = ReadFile("plain_text.txt");
+    plain_text = readFile("plain_text.txt");
 
     cout<<"plain_text:\t"<<plain_text<<endl;
 
-    unique_characters = GetUniqueCharacters( plain_text );
+    unique_characters = getUniqueCharacters( plain_text );
 	cout<<"unique character:\t"<<unique_characters<<endl;
 
-    GenerateKeysByPermutation( unique_characters );
-    key = keys[rand()%100];
+    generateKeysByPermutation( unique_characters );
+    key = keys[rand()%keys.size()];
     cout<<"Choosen Key:\t"<<key<<endl;
 
-    cipher_text = Encrypt( plain_text, unique_characters, key );
+    cipher_text = encrypt( plain_text, unique_characters, key );
     cout<<"cipher_text:\t"<<cipher_text<<endl;
 
-    StoreFile("cipher_text.txt", cipher_text);
+    storeFile("cipher_text.txt", cipher_text);
 
-    CalculateFrequency(unique_characters, key, plain_text);
+    calculateFrequency(unique_characters, key, plain_text);
 
 	return 0;
 }
