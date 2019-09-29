@@ -23,19 +23,15 @@ int order;
 string FormatMessage(string message)
 {
     for(int i=0;i<message.length();i++)
-    {
         if(message[i] == ' ')   // add conditions here for any other special characters
             message = message.replace(i, 1, "");
-        if(message[i] == 'j')
-            message = message.replace(i, 1, "i");
-    }
 
 	
     for(int i=1;i<message.length();i++)
          if(message[i-1] == message[i])
             message = message.insert(i, "x"), i++;
 		
-    if(message.length()%2)
+    if(message.length()%order)
         message += "x";
     return message;
 }
@@ -79,11 +75,11 @@ int GetDeterminant()
         for(int i = 0; i < 3; i++)
             determinant = determinant + (keyMatrix[0][i] * (keyMatrix[1][(i+1)%3] * keyMatrix[2][(i+2)%3] - keyMatrix[1][(i+2)%3] * keyMatrix[2][(i+1)%3]));
 
-	if(determinant<0)
+    if(determinant<0)
         determinant = 26 - (int(-determinant)%26);
     else
         determinant = int(determinant)%26;
-	determinant = GetInverseDeterminant(determinant, 26);
+    determinant = GetInverseDeterminant(determinant, 26);
 	
     return determinant;
 }
