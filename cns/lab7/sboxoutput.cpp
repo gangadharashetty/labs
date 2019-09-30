@@ -10,7 +10,7 @@ Author: Gangadhara Shetty P J
 #include<bits/stdc++.h>
 using namespace std;
 
-string key;
+string key, previous;
 int permute[]={
     16,7,20,21,29,12,28,17,
     1,15,23,26,5,18,31,10,
@@ -83,16 +83,28 @@ int main()
 	cin>>hex>>hexkey;
 
 	key=bitset<48>(hexkey).to_string();
+	
+	cout<<"Enter a 64 bit key in hex: ";
+    cin>>hex>>hexkey;
+	previous=bitset<64>(hexkey).to_string();
+	
+	
 	string str = "";
     for(int i=0, sb=0;i<48;i+=6, sb++){
         string row = "", col = "";
         row= row+key[i]+key[i+5];
         col= col+key[i+1]+key[i+2]+key[i+3]+key[i+4];
-            key1+=bitset<4>(sbox[sb][((int)bitset<2>(row).to_ulong()*16)+(int)bitset<4>(col).to_ulong()]).to_string();
+        string tempKey = bitset<4>(sbox[sb][ ((int)bitset<2>(row).to_ulong()*16)+(int)bitset<4>(col).to_ulong()]).to_string();
+		cout<<"SBOX  "<<i<<" OUTPUT: "<<tempKey<<endl;
+		key1+=tempKey;
     }
+	
     key=key1;
 	findPermutation();
 
+	for(int i=0;i<32;i++)
+		if(key[i]==previous[i]) key[i]='0';
+		else key[i]='1';
 	cout<<"S-BOX OUTPUT: "<<hex<< (int)bitset<32>(key).to_ulong()<<endl;
 
 }
@@ -102,6 +114,15 @@ int main()
 OUTPUT
 ------
 Enter a 48 bit input key in hex: 6117ba866527
-S-BOX OUTPUT: 234aa9bb
+Enter a 64 bit key in hex: cc00ccfff0aaf0aa
+SBOX  0 OUTPUT: 0101
+SBOX  6 OUTPUT: 1100
+SBOX  12 OUTPUT: 1000
+SBOX  18 OUTPUT: 0010
+SBOX  24 OUTPUT: 1011
+SBOX  30 OUTPUT: 0101
+SBOX  36 OUTPUT: 1001
+SBOX  42 OUTPUT: 0111
+S-BOX OUTPUT: ef4a6544
 
 */
