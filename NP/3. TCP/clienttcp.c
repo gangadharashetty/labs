@@ -1,3 +1,7 @@
+/*
+Program: TCP Client
+Author: Gangadhara Shetty P J
+*/
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <fcntl.h>

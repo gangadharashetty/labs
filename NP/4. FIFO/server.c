@@ -1,3 +1,7 @@
+/*
+Program: FIFO Server
+Author: Gangadhara Shetty P J
+*/
 #include <stdio.h> 
 #include <string.h> 
 #include <fcntl.h> 
