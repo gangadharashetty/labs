@@ -10,15 +10,11 @@
 int main()
 {
 	int sock;
-	struct sockaddr_in addr, c_addr;
+	struct sockaddr_in addr = { AF_INET, htons(1236), INADDR_ANY };
 	char buffer[100];
 	char *msg = "this is server";
 	
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
-	
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(1236);
-	addr.sin_addr.s_addr = INADDR_ANY;
 	
 	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
 	int len = sizeof(addr);

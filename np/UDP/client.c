@@ -10,17 +10,13 @@
 int main()
 {
 	int sock;
-	struct sockaddr_in addr;
+	struct sockaddr_in addr = { AF_INET, htons(1236), INADDR_ANY };
 	char buffer[100];
 	char *msg = "This is client";
 	
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
-	
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(1236);
-	addr.sin_addr.s_addr = INADDR_ANY;
+
 	int len = sizeof(addr);
-	
 	connect(sock, (struct sockaddr*)& addr, sizeof(addr));
 	
 	sendto(sock, msg, strlen(msg), 0, (struct sockaddr *) &addr,sizeof(addr));
