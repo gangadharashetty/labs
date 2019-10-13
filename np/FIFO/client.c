@@ -10,14 +10,11 @@ int main()
 	int fd, fd1; 
 	char arr1[80], arr2[80];
 
-	char * myfifo = "/tmp/myfifo"; 
-	char * myfifo1 = "/tmp/myfifo1"; 
-
-	mkfifo(myfifo, 0666); 
-	mkfifo(myfifo1, 0666); 	
+	mkfifo("/myfifo", 0666); 
+	mkfifo("/myfifo1", 0666); 	
 	
-	fd = open(myfifo, O_RDONLY);
-	fd1 = open(myfifo1, O_WRONLY);
+	fd = open("/myfifo", O_RDONLY);
+	fd1 = open("/myfifo1", O_WRONLY);
  
 	while (1) 
 	{  
