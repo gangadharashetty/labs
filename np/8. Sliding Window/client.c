@@ -1,5 +1,5 @@
 /*
-Program: TCP Client
+Program: Sliding Window Client
 Author: Gangadhara Shetty P J
 */
 #include <stdio.h> 

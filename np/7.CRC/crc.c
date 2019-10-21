@@ -1,5 +1,5 @@
 /*
-Program: TCP Client
+Program: CRC
 Author: Gangadhara Shetty P J
 */
 #include <stdio.h>
