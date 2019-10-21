@@ -7,12 +7,13 @@ Author: Gangadhara Shetty P J
 #include <fcntl.h> 
 #include <sys/stat.h> 
 #include <sys/types.h> 
+#include <arpa/inet.h>
 #include <unistd.h> 
 
 int main() 
 { 
-	int fd, fd1; 
-	char arr1[80], arr2[80]; 
+	int fd, fd1, file, n; 
+	char arr1[80], buffer[1024]; 
 
 	mkfifo("/myfifo", 0666); 
 	mkfifo("/myfifo1", 0666); 
@@ -20,14 +21,14 @@ int main()
 	fd = open("/myfifo", O_WRONLY);
 	fd1 = open("/myfifo1", O_RDONLY);
 
-	while (1) 
-	{  
-		fgets(arr2, 80, stdin); 
-		write(fd, arr2, strlen(arr2)+1);
-
-		read(fd1, arr1, sizeof(arr1)); 
-		printf("User2: %s\n", arr1);  
-	} 
+	read(fd1, arr1, sizeof(arr1)); 
+	printf("File name: %s\n", arr1); 
+	file = open(arr1, O_RDONLY);
+	
+	while ((n = read(file, buffer, sizeof(buffer)) > 0))
+		buffer[n]='\n', write(fd, buffer, sizeof(buffer));
+	
+	write(fd, "EXIT", 5);
 	
 	close(fd);
 	close(fd1);
