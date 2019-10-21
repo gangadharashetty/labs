@@ -9,7 +9,7 @@ Author: Gangadhara Shetty P J
 #include <unistd.h>
 #include <string.h>
 
-#define FRAME_SIZE 5
+#define FRAME_SIZE 5 //( actual size + 1)
 int main()
 {
     int server_fd, soc, i, j=0;
