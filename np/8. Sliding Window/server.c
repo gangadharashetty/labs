@@ -33,7 +33,7 @@ int main()
 			send(soc, frame, FRAME_SIZE, 0);
 			recv(soc, frame, 1, 0);
 			if(frame[0]=='0') {
-				printf("Resending the frame %d again\n", i/FRAME_SIZE);
+				printf("Resending the frame %d\n", i/FRAME_SIZE);
 				i-=FRAME_SIZE;
 			}
 		}
@@ -51,7 +51,7 @@ OUTPUT
 Enter message: 123456789123456789123456789123456789123456789123456789123456789123456789123456789
 Frame 0 : 1234
 
-Resending the frame 0 again
+Resending the frame 0 
 Frame 0 : 1234
 
 Frame 1 : 6789
@@ -68,7 +68,7 @@ Frame 6 : 4567
 
 Frame 7 : 9123
 
-Resending the frame 7 again
+Resending the frame 7
 Frame 7 : 9123
 
 Frame 8 : 5678
@@ -81,7 +81,7 @@ Frame 11 : 2345
 
 Frame 12 : 7891
 
-Resending the frame 12 again
+Resending the frame 12
 Frame 12 : 7891
 
 Frame 13 : 3456
@@ -90,6 +90,6 @@ Frame 14 : 8912
 
 Frame 15 : 4567
 
-Resending the frame 15 again
+Resending the frame 15
 Frame 15 : 4567
 */
