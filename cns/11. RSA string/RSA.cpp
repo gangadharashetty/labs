@@ -31,11 +31,20 @@ int GetInverseDeterminant(int R , int D){ //R is the remainder or determinant
 			q0 = q1; 
 			q1 = q ;
 		}
-
 		i++ ; 
 	}
 	p1 = (p0-p1*(q0))%fi ; 
 	return p1 ; 
+}
+int powModN(int num,int p,int n)
+{
+	int res=1;
+	for(int i=0; i<p; i++)
+	{
+        res = res * num;
+        res = res %  n;
+	}
+	return res;
 }
 
 int main()
@@ -43,41 +52,46 @@ int main()
     long long int p, q, n, fi, e, d;
     string msg, plain, enc;
     string bits="";
-    cout<<"Enter P , Q & message values: ";
+    cout<<"Enter P , Q & message values(all small letters): ";
     cin>>p>>q>>msg;
     n = p*q;
     fi=(p-1)*(q-1);
     cout<<"fi = "<<fi<<endl;
-    for(int i=2;i<fi; i++)
+    
+	for(int i=2;i<fi; i++)
         if(gcd(i, fi) ==1)
             {e=i;  break;}
     cout<<"e = "<<e<<endl;
-    d = GetInverseDeterminant(e, fi);
-    if(d<0) d = fi - (-d%fi);
+    
+	d = GetInverseDeterminant(e, fi);
+    
+	if(d<0) d = fi - (-d%fi);
     else d = d%fi;
     cout<<"d = "<<d<<endl;
+	
 	cout<<"plain text = ";
 	for(int i=0; i<msg.length();i++)
-		cout<<(int)msg[i]<< "  ";
+		cout<<msg[i]-'a'<< "  ";
+	
 	for(int i=0; i<msg.length();i++){
-		enc+=(int)pow(msg[i], e) % n;
-		plain+=(int)pow(enc[i], d) % n;
+		enc+=powModN(msg[i]-'a', e, n);
+		plain+=powModN(enc[i], d, n);
 	}
+	
 	cout<<endl<<"encrypted text = ";
 	for(int i=0; i<msg.length();i++)
 		cout<<(int)enc[i]<< "  ";
+	
 	cout<<endl<<"decrypted text = ";
 	for(int i=0; i<msg.length();i++)
 		cout<<(int)plain[i]<< "  ";
 }
 /*
-Enter P , Q & message values: 3
-5
-adfugehvlehariop
-fi = 8
-e = 3
-d = 3
-plain text = 0  3  5  20  6  4  7  21  11  4  7  0  17  8  14  15
-encrypted text = 12  10  3  3  7  10  14  7  12  10  14  12  9  14  6  13
-decrypted text = 0  3  5  20  6  4  7  21  11  4  7  0  17  8  14  15
+Enter P , Q & message values: (all small letters)11 7 thisiscnslab
+fi = 60
+e = 7
+d = 43
+plain text = 19  7  8  18  8  18  2  13  18  11  0  1
+encrypted text = 68  28  57  39  57  39  51  62  39  11  0  1
+decrypted text = 19  7  8  18  8  18  2  13  18  11  0  1
 */
