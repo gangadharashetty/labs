@@ -2,7 +2,6 @@
 Program: BBS Algorithm
 Author: Gangadhara Shetty P J
 */
-
 #include<bits/stdc++.h>
 #define BIT_SIZE 16
 
@@ -12,13 +11,9 @@ int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
-
 bool rabinMiller(int n)
 {
 	int k, q=n-1;
@@ -35,7 +30,6 @@ bool rabinMiller(int n)
 	}
     return false;
 }
-
 int main()
 {
     long long int s, p, q, n;
@@ -55,8 +49,7 @@ int main()
 		cout<<"Composite"<<endl;
 	else
 		cout<<"InConclusive"<<endl;
-	
-    
+
 }
 /*
 output:

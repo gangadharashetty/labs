@@ -7,7 +7,7 @@ Author: Gangadhara Shetty P J
 using namespace std;
 int main()
 {
-    int s[256], t[256], k[256], p[256], c[256];
+    int s[256], t[256], k[256], p[256], c[256], j=0;
     string plain, cipher, key;
     cout<<"Enter plain text:";
     cin>>plain;
@@ -15,16 +15,14 @@ int main()
     cin>>key;
 
     cout<<"plaintext in bytes : " ;
-        for(int i =0 ;i < plain.length() ; i++) cout<< (int)plain[i]<<" " ;
-        cout<<endl;
+	for(int i =0 ;i < plain.length() ; i++) cout<< (int)plain[i]<<" " ;
+	cout<<endl;
 
     for(int i=0;i<255;i++)
         s[i] = i, t[i] = (int)key[i % key.length()];
 
-    int j=0;
-    for(int i=0; i<256; i++){
+    for(int i=0, j=0; i<256; i++){
         j = (j+s[i]+t[i])%256;
-
         int t = s[i],   s[i] = s[j],   s[j] = t;
     }
 
@@ -40,10 +38,9 @@ int main()
         k[l] = s[t];
     }
 
-
     cout<<"keystream in bytes : " ;
-        for(int i =0 ;i < plain.length() ; i++) cout<< k[i]<<" " ;
-        cout<<endl;
+    for(int i =0 ;i < plain.length() ; i++) cout<< k[i]<<" " ;
+    cout<<endl;
 
     cout<<"cipher text in bytes : " ;
     for(int i=0;i<plain.length();i++)
