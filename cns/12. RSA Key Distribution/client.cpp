@@ -1,7 +1,7 @@
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
-
+char buffer[100];
 int connectToServer(const char* ip, int port)
 {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -21,15 +21,6 @@ int powModN(int num,int p,int n)
 	return res;
 }
 
-int ctoi(char buf[100])
-{
-	int i=0;
-	int n1=0;
-	while(buf[i])
-		n1*=10, n1+=(buf[i++]-'0');
-	return n1;
-}
-
 void ctoi(char buf[100], int &n1, int &n2)
 {
 	int i=0;
@@ -39,24 +30,27 @@ void ctoi(char buf[100], int &n1, int &n2)
 	while(buf[++i])
 		n2*=10, n2+=(buf[i]-'0');
 }
-
+void itoc(int n1, int n2)
+{
+	string s = to_string(n1)+"|"+to_string(n2);
+	strcpy(buffer, s.c_str());
+}
 int main()
 {
     char ip[50]="127.0.0.1";
-    int port=1234;
-	int pue, pre, pus, sid, nonces, noncec, cid, noncec1, ns, nc;
+    int port=1234, pue, pre, pus, sid, nonces, noncec, cid, noncec1, ns, nc;
     int sock = connectToServer(ip, port);
-	char buffer[100];
 	srand(time(NULL));
-	noncec = rand()%100;
+	
 	cout<<"1. enter client (e|n): ";
 	cin>>buffer;
 	ctoi(buffer, pue,nc);
 	cout<<"Sending pue|n "<<buffer<<endl;
-	send(sock, &buffer, sizeof(buffer), 0); 
+	send(sock, &buffer, sizeof(buffer), 0);
+	
 	cout<<"2. enter client (d): ";
 	cin>>buffer;
-	pre = ctoi(buffer);
+	pre = atoi(buffer);
 	
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
@@ -71,20 +65,20 @@ int main()
 	cout<<"received encrypted sid|nonces "<<buffer<<endl;
 	cout<<"received decrypted sid|nonces "<<sid<<"|"<<nonces<<endl;
 	
-	string s = to_string(powModN(nonces, pus, ns))+"|"+to_string(powModN(noncec, pus, ns));
-	strcpy(buffer, s.c_str());
+	noncec = rand()%100;
+	itoc(powModN(nonces, pus, ns), powModN(noncec, pus, ns));
 	send(sock, &buffer, sizeof(buffer), 0);
 	cout<<"Sending plain nonces|noncec "<< nonces<<"|"<<noncec<<endl;
 	cout<<"Sending encrypted nonces|noncec "<< buffer<<endl;
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
-	noncec1 = ctoi(buffer);
+	noncec1 = atoi(buffer);
 	cout<<"received encrypted noncec "<<noncec1<<endl;
 	cout<<"received decrypted noncec "<<powModN(noncec1, pre, nc)<<endl;
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
 	cout<<"received encrypted key "<<buffer<<endl;
-	cout<<"received decrypted key "<<powModN(ctoi(buffer), pre, nc)<<endl;
+	cout<<"received decrypted key "<<powModN(atoi(buffer), pre, nc)<<endl;
 	return 0;
 }
 

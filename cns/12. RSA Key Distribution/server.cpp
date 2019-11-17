@@ -1,16 +1,14 @@
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
-
+char buffer[100];
 int createServer(int port)
 {
     int sersock = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in addr = {AF_INET, htons(port), INADDR_ANY};
     bind(sersock, (struct sockaddr *) &addr, sizeof(addr));
-
     listen(sersock, 5);
     int sock = accept(sersock, NULL, NULL);
-
     return sock;
 }
 int powModN(int num,int p,int n)
@@ -23,14 +21,6 @@ int powModN(int num,int p,int n)
 	}
 	return res;
 }
-int ctoi(char buf[100])
-{
-	int i=0, n1=0;
-	while(buf[i])
-		n1*=10, n1+=(buf[i++]-'0');
-	return n1;
-}
-
 void ctoi(char buf[100], int &n1, int &n2)
 {
 	int i=0;
@@ -40,14 +30,21 @@ void ctoi(char buf[100], int &n1, int &n2)
 	while(buf[++i])
 		n2*=10, n2+=(buf[i]-'0');
 }
-
+void itoc(int n1, int n2)
+{
+	string s = to_string(n1)+"|"+to_string(n2);
+	strcpy(buffer, s.c_str());
+}
+void itoc(int n1)
+{
+	string s = to_string(n1);
+	strcpy(buffer, s.c_str());
+}
 int main()
 {
-    int port=1234, sid, sid1, cid, nonces,nonces1, noncec, pue, ns, nc, pus, prs;
+    int port=1234, sid, sid1, cid, nonces,nonces1, noncec, pue, ns, nc, pus, prs, key;
     int sock = createServer(port);
-	char buffer[100];
 	srand(time(NULL));
-	nonces = rand()%100;
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
 	ctoi(buffer, pue,nc);
@@ -57,17 +54,18 @@ int main()
 	cin>>buffer;
 	ctoi(buffer, pus, ns);
 	send(sock, &buffer, sizeof(buffer), 0);
+	
 	cout<<"4. Enter server (d): ";
 	cin>>buffer;
-	prs = ctoi(buffer);
+	prs = atoi(buffer);
 	
 	cout<<"5. Enter server ID: ";
 	cin>>sid;
-	string s = to_string(powModN(sid, pue,nc))+"|"+to_string(powModN(nonces, pue,nc));
-	cout<<"sending plain sid|nonces "<<sid<<"|"<<nonces<<endl;
-	cout<<"sending encrypted sid|nonces "<<s<<endl;
-	strcpy(buffer, s.c_str());
+	nonces = rand()%100;
+	itoc(powModN(sid, pue,nc), powModN(nonces, pue,nc));
 	send(sock, &buffer, sizeof(buffer), 0);
+	cout<<"sending plain sid|nonces "<<sid<<"|"<<nonces<<endl;
+	cout<<"sending encrypted sid|nonces "<<buffer<<endl;
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
 	ctoi(buffer, nonces, noncec);
@@ -76,23 +74,17 @@ int main()
 	cout<<"received encrypted nonces|noncec "<<buffer<<endl;
 	cout<<"received decrypted nonces|noncec "<<nonces1<<"|"<<noncec<<endl;
 	
-	s = to_string(powModN(cid, pue, nc));
-	strcpy(buffer, s.c_str());
+	itoc(powModN(cid, pue, nc));
 	send(sock, &buffer, sizeof(buffer), 0);
 	cout<<"Sending plain noncec "<<noncec<<endl;
 	cout<<"Sending encrypted noncec "<<noncec<<endl;
 	
 	cout<<"6. Enter the key: ";
-	cin>>buffer;
-	cout<<"Sending plain key "<<buffer<<endl;
-	s = to_string(powModN(ctoi(buffer), pue, nc));
-	strcpy(buffer, s.c_str());
+	cin>>key;
+	cout<<"Sending plain key "<<key<<endl;
+	itoc(powModN(key, pue, nc));
 	send(sock, &buffer, sizeof(buffer), 0);
 	cout<<"Sending encrypted key "<<buffer<<endl;
-	//recv(sock, &s, sizeof(s), 0);
-    
-  
-    //send(sock, &s, sizeof(s), 0); 
   
 }
 
