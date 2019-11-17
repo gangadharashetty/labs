@@ -40,9 +40,31 @@ void itoc(int n1)
 	string s = to_string(n1);
 	strcpy(buffer, s.c_str());
 }
+int GetInverseDeterminant(int e ,int fi){ 
+	for(int i=1;i<fi;i++)
+		if((i*e)%fi==1) return i;
+	return -1;
+}
+int gcd(int p, int q)
+{
+    if(q==0)    return p;
+    gcd(q, p%q);
+}
+void generateKey(int p, int q, int &e, int &d, int &n)
+{
+	n = p*q;
+    int fi=(p-1)*(q-1);
+    for(int i=2;i<fi; i++)
+        if(gcd(i, fi) ==1)
+            {e=i;  break;}
+	d = GetInverseDeterminant(e, fi);
+	cout<<"Public key of server: ("<<e<<"|"<<d<<")"<<endl;
+	cout<<"Private key of server: ("<<d<<"|"<<d<<")"<<endl;
+}
+
 int main()
 {
-    int port=1234, sid, sid1, cid, nonces,nonces1, noncec, pue, ns, nc, pus, prs, key;
+    int port=1234, sid, sid1, cid, nonces,nonces1, noncec, pue, ns, nc, pus, prs, key, p, q;
     int sock = createServer(port);
 	srand(time(NULL));
 	
@@ -50,16 +72,15 @@ int main()
 	ctoi(buffer, pue,nc);
 	cout<<"received pue|n "<<buffer<<endl;
 	
-	cout<<"3. Enter server (e|n): ";
-	cin>>buffer;
-	ctoi(buffer, pus, ns);
+	cout << "\n2. Enter two prime numbers : "; 
+	cin >> p >> q;
+	
+	generateKey(p, q, pus, prs, ns);
+	itoc(pus, ns);
+	cout<<"Sending pue|n "<<buffer<<endl;
 	send(sock, &buffer, sizeof(buffer), 0);
 	
-	cout<<"4. Enter server (d): ";
-	cin>>buffer;
-	prs = atoi(buffer);
-	
-	cout<<"5. Enter server ID: ";
+	cout<<"3. Enter server ID: ";
 	cin>>sid;
 	nonces = rand()%100;
 	itoc(powModN(sid, pue,nc), powModN(nonces, pue,nc));
@@ -68,21 +89,26 @@ int main()
 	cout<<"sending encrypted sid|nonces "<<buffer<<endl;
 	
 	recv(sock, &buffer, sizeof(buffer), 0);
-	ctoi(buffer, nonces, noncec);
-	nonces1 = powModN(nonces,prs,ns);
+	ctoi(buffer, nonces1, noncec);
+	nonces1 = powModN(nonces1,prs,ns);
 	noncec= powModN(noncec, prs,ns);
-	cout<<"received encrypted nonces|noncec "<<buffer<<endl;
-	cout<<"received decrypted nonces|noncec "<<nonces1<<"|"<<noncec<<endl;
+	cout<<"received encrypted nonces|noncec from client "<<buffer<<endl;
+	cout<<"received decrypted nonces|noncec from client "<<nonces1<<"|"<<noncec<<endl;
+	if(nonces!=nonces1)
+		{	cout<<"Nonce din't match"<<endl;	exit(0);	}
+	else	cout<<"Client Authenticated"<<endl;
 	
-	itoc(powModN(cid, pue, nc));
+	itoc(powModN(noncec, pue, nc));
 	send(sock, &buffer, sizeof(buffer), 0);
 	cout<<"Sending plain noncec "<<noncec<<endl;
-	cout<<"Sending encrypted noncec "<<noncec<<endl;
+	cout<<"Sending encrypted noncec "<<buffer<<endl;
 	
-	cout<<"6. Enter the key: ";
+	cout<<"4. Enter the key: ";
 	cin>>key;
 	cout<<"Sending plain key "<<key<<endl;
-	itoc(powModN(key, pue, nc));
+	key = powModN(key, prs, ns);
+	key = powModN(key, pue, nc);
+	itoc(key);
 	send(sock, &buffer, sizeof(buffer), 0);
 	cout<<"Sending encrypted key "<<buffer<<endl;
   
