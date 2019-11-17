@@ -1,7 +1,7 @@
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
-
+char buffer[100];
 int connectToServer(const char* ip, int port)
 {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -20,47 +20,26 @@ int powModN(int num,int p,int n)
 	}
 	return res;
 }
-
-long long int gcd(int p, int q)
+int gcd(int p, int q)
 {
     if(q==0)    return p;
     gcd(q, p%q);
 }
-
-int GetInverseDeterminant(int R , int D){ //R is the remainder or determinant
-	int i =0 ;
-	int p0= 0 , p1 =1 ; 
-	int q = 1 , q0 , q1 = D/R; 
-	int fi=D;
-	while(R!=0){
-		q = D/R ;
-		int tempD = D ; 
-		D = R ; 
-		R = tempD%R ; 
-
-		if(i==0) { p0 = 0 ; q0 = q ; }
-		else if(i==1){ p1==1 ;q1 = q ; }
-		else{
-			int temp = p1 ;
-			p1 = (p0-p1*(q0))% fi; 
-			if(p1<0)p1 = fi-((-p1)%fi) ; 
-			p0 = temp ;
-			
-			q0 = q1; 
-			q1 = q ;
-		}
-
-		i++ ; 
-	}
-	p1 = (p0-p1*(q0))%fi ; 
-	return p1 ; 
+void itoc(int n1, int n2)
+{
+	string s = to_string(n1)+"|"+to_string(n2);
+	strcpy(buffer, s.c_str());
 }
-
+int GetInverseDeterminant(int e ,int fi){ 
+	for(int i=1;i<fi;i++)
+		if((i*e)%fi==1) return i;
+	return -1;
+}
 int main()
 {
     char ip[50]="127.0.0.1";
     int port=1234;
-	long long int p, q, e, d, n, fi;
+	long long int p, q, e, d, n, fi, C;
     int sock = connectToServer(ip, port);
 
     cout << "\nEnter two prime numbers : "; 
@@ -71,18 +50,23 @@ int main()
         if(gcd(i, fi) ==1)
             {e=i;  break;}
 	d = GetInverseDeterminant(e, fi);
-	if(d<0) d = fi - (-d%fi);
-    else d = d%fi;
 	
 	cout<<"d= "<<d<<endl;
-	char pu[3]={e, n, '\0'};
-    send(sock, &pu, sizeof(pu), 0); 
+	itoc(e,n);
+    send(sock, &buffer, sizeof(buffer), 0); 
     cout << "\nSent Public key to server." << endl;
 
-    int C; 
     recv(sock, &C, sizeof(C), 0); 
     cout << "\nCiphertext received from server : " << C << endl;
 
     int M = powModN(C, d, n); 
     cout << "\nDecrypted Text : " << M << endl << endl;
 }
+
+/*
+Enter two prime numbers : 11 7                                                        
+d= 43                                                                                                                                                                       
+Sent Public key to server.                                                                                                                                                  
+Ciphertext received from server : 64                                                                                                                                        
+Decrypted Text : 36
+*/
