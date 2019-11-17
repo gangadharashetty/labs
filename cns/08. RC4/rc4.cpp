@@ -8,10 +8,8 @@ int main()
 {
     int s[256], t[256], k[256], p[256], c[256], j=0;
     string plain, cipher, key;
-    cout<<"Enter plain text:";
-    cin>>plain;
-    cout<<"Enter key:";
-    cin>>key;
+    cout<<"Enter plain text nad key:";
+    cin>>plain>>key;
 	
     cout<<"plaintext in bytes : " ;
 	for(int i =0 ;i < plain.length() ; i++) cout<< (int)plain[i]<<" " ;
