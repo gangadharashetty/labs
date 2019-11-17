@@ -18,7 +18,6 @@ int permute[]={
     24,25,26,27,28,29,
     28,29,30,31,32,1
 };
-
 void findPermutation()
 {
     string key1;
@@ -26,7 +25,6 @@ void findPermutation()
         key1 += key[permute[i]-1+32];
     key=key1;
 }
-
 int main()
 {
 
@@ -48,11 +46,7 @@ int main()
         cout<<"S-BOX INPUT: "<<hex<< bitset<48>(key).to_ulong()<<endl;
 
 }
-
-
 /*
-
-
 OUTPUT
 ------
 Enter a 64 bit key in hex: aaaaaaaaf0aaf0aa
