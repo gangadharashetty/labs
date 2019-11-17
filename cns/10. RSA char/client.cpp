@@ -1,3 +1,7 @@
+/*
+Program: RSA client
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -9,15 +13,11 @@ int connectToServer(const char* ip, int port)
     connect(sock, (struct sockaddr *) &addr, sizeof(addr));
     return sock;
 }
-
 int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
 int gcd(int p, int q)
@@ -35,23 +35,27 @@ int GetInverseDeterminant(int e ,int fi){
 		if((i*e)%fi==1) return i;
 	return -1;
 }
-int main()
+void generateKey(int p, int q, int &e, int &d, int &n)
 {
-    char ip[50]="127.0.0.1";
-    int port=1234;
-	long long int p, q, e, d, n, fi, C;
-    int sock = connectToServer(ip, port);
-
-    cout << "\nEnter two prime numbers : "; 
-	cin >> p >> q;
-    n = p*q;
-    fi=(p-1)*(q-1);
+	n = p*q;
+    int fi=(p-1)*(q-1);
     for(int i=2;i<fi; i++)
         if(gcd(i, fi) ==1)
             {e=i;  break;}
 	d = GetInverseDeterminant(e, fi);
+	cout<<"Public key of server: ("<<e<<"|"<<n<<")"<<endl;
+	cout<<"Private key of server: ("<<d<<"|"<<n<<")"<<endl;
+}
+int main()
+{
+    char ip[50]="127.0.0.1";
+    int port=1234, p, q, e, d, n, fi, C;
+    int sock = connectToServer(ip, port);
+
+    cout << "\nEnter two prime numbers : "; 
+	cin >> p >> q;
+    generateKey(p, q, e, d, n);
 	
-	cout<<"d= "<<d<<endl;
 	itoc(e,n);
     send(sock, &buffer, sizeof(buffer), 0); 
     cout << "\nSent Public key to server." << endl;

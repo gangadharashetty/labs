@@ -1,3 +1,7 @@
+/*
+Program: Diffie Hellman client
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -9,18 +13,13 @@ int connectToServer(const char* ip, int port)
     connect(sock, (struct sockaddr *) &addr, sizeof(addr));
     return sock;
 }
-
 int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
-
 void itoa(int x)
 {
 	string s= to_string(x);

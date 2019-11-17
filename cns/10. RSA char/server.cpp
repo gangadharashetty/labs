@@ -1,3 +1,7 @@
+/*
+Program: RSA server
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -7,10 +11,8 @@ int createServer(int port)
     int sersock = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in addr = {AF_INET, htons(port), INADDR_ANY};
     bind(sersock, (struct sockaddr *) &addr, sizeof(addr));
-
     listen(sersock, 5);
     int sock = accept(sersock, NULL, NULL);
-
     return sock;
 }
 void ctoi(char buf[100], int &n1, int &n2)
@@ -26,10 +28,7 @@ int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
 int main()
@@ -37,16 +36,16 @@ int main()
     int port=1234, e,n, M;
     int sock = createServer(port);
 
-    recv(sock, &buffer, sizeof(buffer), 0); // receive public key from client
+    recv(sock, &buffer, sizeof(buffer), 0);
 	ctoi(buffer, e,n);
-    cout << "\nPublic key received from client : {" << e << ", " << n << "}" << endl;
+    cout << "\nPublic key received from client : (" << e << ", " << n << ")" << endl;
 
     cout << "\nEnter message(M<" << n << ") to encrypt : "; 
 	cin >> M;
 
     int C = powModN(M, e, n);
     cout << "\nEncrypted Text : " << C << endl;
-    send(sock, &C, sizeof(C), 0); // send ciphertext to client
+    send(sock, &C, sizeof(C), 0);
     cout << "\nSent ciphertext to client." << endl << endl;
 }
 /*

@@ -1,5 +1,5 @@
 /*
-Program: B Algorithm
+Program: BBS Algorithm
 Author: Gangadhara Shetty P J
 */
 

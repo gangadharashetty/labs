@@ -1,3 +1,7 @@
+/*
+Program: RSA Key Exchange client
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -18,10 +22,7 @@ int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
 void ctoi(char buf[100], int &n1, int &n2)
@@ -54,7 +55,6 @@ void generateKey(int p, int q, int &e, int &d, int &n)
 	cout<<"Public key of client: ("<<e<<"|"<<d<<")"<<endl;
 	cout<<"Private key of client: ("<<d<<"|"<<d<<")"<<endl;
 }
-
 int main()
 {
     char ip[50]="127.0.0.1";

@@ -1,3 +1,7 @@
+/*
+Program: Diffie Hellman server
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -11,15 +15,11 @@ int createServer(int port)
     int sock = accept(sersock, NULL, NULL);
     return sock;
 }
-
 int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
 void itoa(int x)
@@ -29,9 +29,8 @@ void itoa(int x)
 }
 int main()
 {
-    int port=1234;
+    int port=1234, q, alpha, xb, ya, yb, cipher, key, message;
 	int sock = createServer(port);
-	int q, alpha, xb, ya, yb, cipher, key, message;
     
 	cout<<"3. Enter prime number  and primitive root: ";
     cin>>q>>alpha;

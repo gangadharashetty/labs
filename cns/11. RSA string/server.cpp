@@ -1,3 +1,7 @@
+/*
+Program: RSA Block server
+Author: Gangadhara Shetty P J
+*/
 # include <bits/stdc++.h>
 # include <arpa/inet.h> 
 using namespace std;
@@ -26,10 +30,7 @@ int powModN(int num,int p,int n)
 {
 	int res=1;
 	for(int i=0; i<p; i++)
-	{
-        res = res * num;
-        res = res %  n;
-	}
+        res = (res * num) % n;
 	return res;
 }
 int main()
@@ -38,9 +39,9 @@ int main()
     int sock = createServer(port);
 	string message;
 
-    recv(sock, &buffer, sizeof(buffer), 0); // receive public key from client
+    recv(sock, &buffer, sizeof(buffer), 0); 
 	ctoi(buffer, e,n);
-    cout << "\nPublic key received from client : {" << e << ", " << n << "}" << endl;
+    cout << "\nPublic key received from client : (" << e << ", " << n << ")" << endl;
 
     cout << "\nEnter message to be send : "; 
 	cin >> message;
