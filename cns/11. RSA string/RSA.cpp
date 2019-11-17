@@ -3,38 +3,16 @@
 
 using namespace std;
 
-long long int gcd(int p, int q)
+int gcd(int p, int q)
 {
     if(q==0)    return p;
     gcd(q, p%q);
 }
 
-int GetInverseDeterminant(int R , int D){ //R is the remainder or determinant
-	int i =0 ;
-	int p0= 0 , p1 =1 ; 
-	int q = 1 , q0 , q1 = D/R; 
-	int fi=D;
-	while(R!=0){
-		q = D/R ;
-		int tempD = D ; 
-		D = R ; 
-		R = tempD%R ; 
-
-		if(i==0) { p0 = 0 ; q0 = q ; }
-		else if(i==1){ p1==1 ;q1 = q ; }
-		else{
-			int temp = p1 ;
-			p1 = (p0-p1*(q0))% fi; 
-			if(p1<0)p1 = fi-((-p1)%fi) ; 
-			p0 = temp ;
-			
-			q0 = q1; 
-			q1 = q ;
-		}
-		i++ ; 
-	}
-	p1 = (p0-p1*(q0))%fi ; 
-	return p1 ; 
+int GetInverseDeterminant(int e ,int fi){ 
+	for(int i=1;i<fi;i++)
+		if((i*e)%fi==1) return i;
+	return -1;
 }
 int powModN(int num,int p,int n)
 {
@@ -62,7 +40,6 @@ int main()
         if(gcd(i, fi) ==1)
             {e=i;  break;}
     cout<<"e = "<<e<<endl;
-    
 	d = GetInverseDeterminant(e, fi);
     
 	if(d<0) d = fi - (-d%fi);
