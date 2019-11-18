@@ -59,8 +59,8 @@ void generateKey(int p, int q, int &e, int &d, int &n)
         if(gcd(i, fi) ==1)
             {e=i;  break;}
 	d = GetInverseDeterminant(e, fi);
-	cout<<"Public key of server: ("<<e<<"|"<<d<<")"<<endl;
-	cout<<"Private key of server: ("<<d<<"|"<<d<<")"<<endl;
+	cout<<"Public key of server: ("<<e<<"|"<<n<<")"<<endl;
+	cout<<"Private key of server: ("<<d<<"|"<<n<<")"<<endl;
 }
 
 int main()

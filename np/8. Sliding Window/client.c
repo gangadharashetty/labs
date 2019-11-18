@@ -7,7 +7,7 @@ Author: Gangadhara Shetty P J
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-
+#define FRAME_SIZE 5 
 int main()
 {
     int soc, n, num=0;
@@ -19,7 +19,7 @@ int main()
     while(connect(soc, (struct sockaddr *) &addr, sizeof(addr))) ;
     printf("\nRecieved data\n\n");
 
-    while ((n = recv(soc, buffer, 5, 0)) > 0)
+    while ((n = recv(soc, buffer, FRAME_SIZE, 0)) > 0)
     {
 		int ran = rand()%10;
 		
