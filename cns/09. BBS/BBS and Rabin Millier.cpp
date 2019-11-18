@@ -19,15 +19,12 @@ bool rabinMiller(int n)
 	int k, q=n-1;
 	for(k=0; q%2==0; k++, q/=2);
 
-    for(int i=0; i<4; i++)
-    {
-        int a = rand()%(n-1)+1;
-        if(powModN(a,q,n) == 1)	
+    int a = rand()%(n-1)+1;
+	if(powModN(a,q,n) == 1)	
+		return true;
+	for(int j=0; j<=k-1; j++)
+		if(powModN(a, pow(2,j)*q, n) == n-1)
 			return true;
-        for(int j=0; j<=k-1; j++)
-            if(powModN(a, pow(2,j)*q, n) == n-1)
-                return true;
-	}
     return false;
 }
 int main()
