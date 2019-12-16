@@ -36,34 +36,10 @@ string FormatMessage(string message)
     return message;
 }
 
-int GetInverseDeterminant(int R , int D = 26){ //R is the remainder or determinant
-	int i =0 ;
-	int p0= 0 , p1 =1 ; 
-	int q = 1 ; 
-	int q0 , q1 ; 
-	while(R!=0){
-		q = D/R ;
-		int tempD = D ; 
-		D = R ; 
-		R = tempD%R ; 
-
-		if(i==0) { p0 = 0 ; q0 = q ; }
-		else if(i==1){ p1==1 ;q1 = q ; }
-		else{
-			int temp = p1 ;
-			p1 = (p0-p1*(q0))%26 ; 
-			if(p1<0)p1 = 26-(abs(p1)%26) ; 
-			p0 = temp ;
-			
-			q0 = q1; 
-			q1 = q ;
-		}
-//		cout<<"p0 , p1 = " << p0 <<" " <<p1<< endl; 
-
-		i++ ; 
-	}
-	p1 = (p0-p1*(q0))%26 ; 
-	return p1 ; 
+int GetInverseDeterminant(int e ,int fi){ 
+	for(int i=1;i<fi;i++)
+		if((i*e)%fi==1) return i;
+	return -1;
 }
 
 int GetDeterminant()
