@@ -22,16 +22,7 @@ int order;
 
 string FormatMessage(string message)
 {
-    for(int i=0;i<message.length();i++)
-        if(message[i] == ' ')   // add conditions here for any other special characters
-            message = message.replace(i, 1, "");
-
-	
-    for(int i=1;i<message.length();i++)
-         if(message[i-1] == message[i])
-            message = message.insert(i, "x"), i++;
-		
-    if(message.length()%order)
+    while(message.length()%order)
         message += "x";
     return message;
 }
@@ -138,7 +129,7 @@ int main()
     cout<<"Enter a message to be encrypted: ";
     getline(cin, message);
 
-    FormatMessage(message);
+    message = FormatMessage(message);
     string enc_msg = Encrypt(message);
     string dec_msg = Decrypt(enc_msg);
     cout<<"Message: "<<message<<endl;
