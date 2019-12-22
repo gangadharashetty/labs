@@ -22,7 +22,7 @@ int main()
 
 	int len = sizeof(addr);
 	connect(sock, (struct sockaddr*)& addr, sizeof(addr));
-	
+	printf("Client connected to server\n");
 	sendto(sock, msg, strlen(msg), 0, (struct sockaddr *) &addr,sizeof(addr));
 	recvfrom(sock, (char *)buffer, sizeof(buffer), 0, ( struct sockaddr *) &addr, &len); 
 	printf("%s\n", buffer);
